@@ -15,9 +15,9 @@ if(count($_visit_subs)>0){  ?>
         </thead>
         <tbody>
             <?php
-            
+
             foreach($_visit_subs as $row):                 
-                
+
                 ?>
             <tr id='row_<?php echo $row['cmpn_sn'];?>'>
                 <td class='name'><?php echo $row['cmpn_name'];?></td>

@@ -9,11 +9,11 @@
   $_card_id      = $_record[0]['cust_card_id'];
   $_cust_id      = $_record[0]['cust_id'];  
   $_first_name      = $_record[0]['cust_first_name'];
-  //$_last_name      = $_record[0]['cust_last_name'];
+
   $_mobile       = $_record[0]['cust_mobile'];
   $_phone       = $_record[0]['cust_phone'];
   $_email       = $_record[0]['cust_email'];
-  //print_r($_record[0]['cust_dob']);
+
   $_dob         = $_record[0]['cust_dob']==0?"":date('d M Y',strtotime($_record[0]['cust_dob']));
   $_address     = $_record[0]['cust_address_line1'];
   $_address2    = $_record[0]['cust_address_line2'];

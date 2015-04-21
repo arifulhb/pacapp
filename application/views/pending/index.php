@@ -16,7 +16,7 @@ if($is_success==true){ ?>
         Pending Subscription List
         <?php /* 
         <a class="btn btn-primary pull-right" href="<?php echo base_url().'outlet/add';?>" role="button">Add New Outlet</a>
-         * */?>         
+         * */?>
     </header>    
     <table class="table table-striped table-advance table-hover table-responsive">
         <thead>

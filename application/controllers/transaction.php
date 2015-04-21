@@ -62,7 +62,7 @@ class Transaction extends CI_Controller {
     public function receipt_session(){
     
         if($this->session->userdata('is_front_logged_in')==TRUE){
-            
+
             
             $new_data=array();
             $new_data['subs_sn']=$this->input->post('subs_sn');

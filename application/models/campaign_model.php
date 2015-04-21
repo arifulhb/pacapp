@@ -84,7 +84,7 @@ class Campaign_model extends CI_Model
         return $res->result_array();
         
     }//end function
-    
+
     public function getRecord($_sn=NULL){
         
         $this->db->select('*');

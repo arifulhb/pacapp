@@ -396,8 +396,12 @@ class Customer_model extends CI_Model
      */
     public function getCampaignlist($card_id){
 
-		//2015-03-27 SUM (cust_balance) is added in SELECT to show total of balance as per request of Nehru
-		//2015-04-06 MAX (s.subs_sn) is added in SELECT to get the latest subscription no to solve receipt bug per request of Nehru
+		/**
+		 * 2015-03-27 SUM (cust_balance) is added in SELECT to show total of balance as per request of Nehru
+		 * 2015-04-06 MAX (s.subs_sn) is added in SELECT to get the latest subscription no to solve receipt bug per request of Nehru
+		 * 2015-04-21 added where clause to check m.cmpn_group=1 to keep othe active transactions alive in the query
+		 */
+
 
         $this->db->select('MAX(s.subs_sn) AS subs_sn, c.cust_first_name,c.cust_sn, IFNULL(SUM(s.cust_balance),0) AS cust_balance ,UNIX_TIMESTAMP(s.expire_date) as expire_date,
             m.cmpn_visit_active_button, c.cust_card_id, c.cust_car_no, s.cmpn_sn, m.cmpn_name, m.cmpn_type',FALSE);

@@ -3,7 +3,7 @@
 <?php
 
 $data=array();
-//echo $_search;
+
 $this->load->view('customer/search',$data);
 //$this->view('customer/search',$data,true);
 ?>   

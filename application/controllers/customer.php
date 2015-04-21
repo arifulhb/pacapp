@@ -575,7 +575,7 @@ class Customer extends CI_Controller {
             $cust_id=$this->input->post('customer_card_id');
             
             if($cust_id!=''){
-                
+
                 $this->load->library('form_validation');
                         
                 $this->form_validation->set_rules('customer_card_id', 'This card is suspended, Pls approach management',

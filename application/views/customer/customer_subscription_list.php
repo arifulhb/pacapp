@@ -15,7 +15,7 @@ if(count($_visit_subs)>0){ ?>
         </thead>
         <tbody>
             <?php
-            
+
             foreach($_visit_subs as $row):                 
                 
                 ?>
