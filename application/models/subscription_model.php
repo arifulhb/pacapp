@@ -507,7 +507,15 @@ class Subscription_model extends CI_Model
         $this->db->join('avcd_campaign AS c','c.cmpn_sn=s.cmpn_sn','LEFT OUTER');
         $this->db->join('avcd_customer AS cust','cust.cust_sn= s.cust_sn','LEFT OUTER');
         $this->db->where('t.trn_sn',$trn_sn);
-        
+
+		/**
+		 * Next where added to avoid free subscription point in calculation
+		 * campaign is active[1] | campaign is not free[0]
+		 *
+		 * Date		21st April, 2015
+		 */
+        $this->db->where('c.cmpn_group',1);
+
         $res=$this->db->get();
 
 //		echo $this->db->last_query();

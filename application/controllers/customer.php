@@ -246,7 +246,6 @@ class Customer extends CI_Controller {
             
             $data['_country']=  getCountry();
 
-            
 
             $this->template->customer_view($data);  
             

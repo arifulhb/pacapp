@@ -24,9 +24,12 @@ if(count($_visit_subs)>0){  ?>
                 <td><?php echo $row['cust_balance'];?></td>
                 <td><?php echo date('d M, Y',$row['expire_date']);?></td>
                 <td>
-                    <a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+					<div class="btn-group">
+                    <a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>"
+					   class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
                     <button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'>
                         <i class="fa fa-times"></i> Unsub</button>
+					</div>
                 </td>
             </tr>
                 <?php
@@ -62,9 +65,12 @@ if(count($_session_subs)>0){ ?>
                     <td><?php echo number_format($row['cust_balance'],2,'. ',', ');?></td>
                     <td><?php echo date('d M, Y',$row['expire_date']);?></td>
                     <td>
-                        <a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-                        <button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'>
-                        <i class="fa fa-times"></i> Unsub</button>
+						<div class="btn-group">
+							<a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>"
+							   class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+							<button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'>
+							<i class="fa fa-times"></i> Unsub</button>
+						</div>
                     </td>
                 </tr>
                     <?php
@@ -98,9 +104,12 @@ if(count($_gift_subs)>0){  ?>
                     <td>$<?php echo number_format($row['cust_balance'],0,'.',', ');?></td>
                     <td><?php echo date('d M, Y',$row['expire_date']);?></td>
                     <td>
-                        <a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+						<div class="btn-group">
+                        <a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>"
+						   class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
                         <button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'>
                         <i class="fa fa-times"></i> Unsub</button>
+						</div>
                     </td>
                 </tr>
                     <?php

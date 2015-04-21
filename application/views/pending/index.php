@@ -41,10 +41,14 @@ if($is_success==true){ ?>
             foreach($_list as $row): ?>
             <tr id="row_<?php echo $row['tmp_subs_sn'];?>">
                 <td>
-                    <a href="<?php echo base_url().'pending/edit/'.$row['tmp_subs_sn'];?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                    <button class="btn btn-remove_pending btn-danger btn-xs" 
-                            value="<?php echo $row['tmp_subs_sn'];?>" title="Reject">
-                        <i class="fa fa-trash-o "></i></button>
+					<div class="btn-group">
+                    	<a href="<?php echo base_url().'pending/edit/'.$row['tmp_subs_sn'];?>"
+					   		class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+
+						<button class="btn btn-remove_pending btn-danger btn-xs" value="<?php echo $row['tmp_subs_sn'];?>"
+								title="Reject"><i class="fa fa-trash-o "></i>
+						</button>
+					</div>
                 </td>                  
                 <td><a href='<?php echo base_url().'pending/view/'.$row['tmp_subs_sn'];?>'>
                     <?php echo date('d M \'y h:i a',$row['subs_date']);?>

@@ -406,6 +406,7 @@ class Customer_model extends CI_Model
         $this->db->join('avcd_campaign AS m','s.cmpn_sn = m.cmpn_sn','LEFT OUTER');
         $this->db->join('avcd_customer_id AS i','i.cust_sn=c.cust_sn','LEFT OUTER');
 		$this->db->where('c.cust_card_id',$card_id);    //CARD ID NUMBER
+		$this->db->where('m.cmpn_group',1);    //campaign is active[1] | campaign is not free[0]
 //		$this->db->where('s.expire_date >=', date("Y-m-d",strtotime("now")));    //ADDED ON MARCH 27, 2015 - TO remove wrong balance in frontend
         $this->db->or_where('c.cust_id',$card_id);      //ID NUMBER
         $this->db->or_where('i.cust_card_id',$card_id);      //cust_card_id ID from history
