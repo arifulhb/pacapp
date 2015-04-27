@@ -30,7 +30,16 @@
                 
             switch ($row['cmpn_type']):
                 case 'visit':
-                    $_type='Visits - '.$row['cust_balance'].' left';
+
+					/**
+//                    $_type='Visits - '.$row['cust_balance'].' left';
+					 * Issue:
+					 * Date: April 27, 2015
+					 * Add "visit" word between cust_balance and left
+					 */
+					$_s= $row['cust_balance']>1?"s":"";
+                    $_type='Visits - '.$row['cust_balance'].' visit'.$_s.' left';
+
                     //$_type='Visits';
                     $_seturl='customer/campaign_visit_activate';
                     break;

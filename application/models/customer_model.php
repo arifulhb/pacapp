@@ -400,10 +400,17 @@ class Customer_model extends CI_Model
 		 * 2015-03-27 SUM (cust_balance) is added in SELECT to show total of balance as per request of Nehru
 		 * 2015-04-06 MAX (s.subs_sn) is added in SELECT to get the latest subscription no to solve receipt bug per request of Nehru
 		 * 2015-04-21 added where clause to check m.cmpn_group=1 to keep othe active transactions alive in the query
+		 * 2015-04-27: Issue: 1 : Subquery for cust_balance added
 		 */
 
-
-        $this->db->select('MAX(s.subs_sn) AS subs_sn, c.cust_first_name,c.cust_sn, IFNULL(SUM(s.cust_balance),0) AS cust_balance ,UNIX_TIMESTAMP(s.expire_date) as expire_date,
+        $this->db->select('subs_sn, c.cust_first_name,c.cust_sn,
+			(SELECT IFNULL(SUM(cust_balance),0) as cbl
+				FROM avcd_subscription as sub
+				LEFT outer join avcd_campaign as cmpn on cmpn.cmpn_sn = sub.cmpn_sn
+				LEFT OUTER JOIN avcd_customer as avc on avc.cust_sn = sub.cust_sn
+				WHERE avc.cust_card_id='.$card_id.'
+				AND cmpn.cmpn_group =1 AND sub.cust_sn= c.cust_sn) AS cust_balance,
+        		UNIX_TIMESTAMP(s.expire_date) as expire_date,
             m.cmpn_visit_active_button, c.cust_card_id, c.cust_car_no, s.cmpn_sn, m.cmpn_name, m.cmpn_type',FALSE);
         $this->db->from('avcd_customer AS c ');
         $this->db->join('avcd_subscription AS s ','s.cust_sn=c.cust_sn','LEFT OUTER');
@@ -414,11 +421,11 @@ class Customer_model extends CI_Model
 //		$this->db->where('s.expire_date >=', date("Y-m-d",strtotime("now")));    //ADDED ON MARCH 27, 2015 - TO remove wrong balance in frontend
         $this->db->or_where('c.cust_id',$card_id);      //ID NUMBER
         $this->db->or_where('i.cust_card_id',$card_id);      //cust_card_id ID from history
-        $this->db->group_by('c.cust_card_id');          //ADDED ON FEB 17, 2015 ON REQUEST OF Nehru at Whatsapp
+//        $this->db->group_by('c.cust_card_id');          //ADDED ON FEB 17, 2015 ON REQUEST OF Nehru at Whatsapp, Removed in issue 1
 		$this->db->order_by('s.subs_sn', 'desc');
+		$this->db->limit(1);
         $res=$this->db->get();
-//        echo $this->db->last_query();
-//        exit();
+
         return $res->result_array();
 
     }//end function

@@ -530,7 +530,7 @@ class Subscription_model extends CI_Model
         $sql='SELECT expire_date FROM avcd_subscription ';
         $sql.='WHERE cust_sn='.$_cust_sn.' AND cmpn_sn='.$_cmpn_sn.' AND expire_date > now()';                
         $res=$this->db->query($sql);
-                
+
         if($res->num_rows()==0){
             return true;
         }else{
