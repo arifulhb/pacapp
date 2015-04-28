@@ -33,12 +33,15 @@
 
 					/**
 //                    $_type='Visits - '.$row['cust_balance'].' left';
-					 * Issue:
+					 * Issue: 1
 					 * Date: April 27, 2015
 					 * Add "visit" word between cust_balance and left
+					 *
+					 * Feature: 2 (http://pm.appiolab.com/issues/2)
+					 * Removed "left" from the visit
 					 */
 					$_s= $row['cust_balance']>1?"s":"";
-                    $_type='Visits - '.$row['cust_balance'].' visit'.$_s.' left';
+                    $_type='Visits - '.$row['cust_balance'].' visit'.$_s.'';
 
                     //$_type='Visits';
                     $_seturl='customer/campaign_visit_activate';
