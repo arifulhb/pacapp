@@ -40,7 +40,24 @@
                     <div class="form-group">
                         <label for="inputCardID" class="col-lg-3 col-sm-3 control-label">Card ID</label>
                         <div class="col-lg-9">
-                            <p class="form-control-static"><?php echo $_card_id;?></p>
+                            <label class="form-control-static"><strong><?php echo $_card_id;?></strong></label>
+							<?php
+
+								echo '<ul class="card_id_list">';
+								foreach($_card_ids as $id):
+
+									$color ='black';
+									if($id['blocked_card']!=null){
+										$color='red';
+									}
+									?>
+									<li style="height: 22px;border-bottom: #eee dotted 1px; color: <?php echo $color;?>;"
+										id="card_<?php echo $id['cust_card_id'];?>"><?php echo $id['cust_card_id'];?>&nbsp;
+									</li>
+								<?php
+								endforeach;
+								echo '</ul>';
+							?>
                         </div>
                     </div>
                 </div>
@@ -159,8 +176,42 @@
                     <div class="form-group">
                         <label for="inputCarColor" class="col-lg-3 col-sm-3 control-label">Additional Information</label>
                         <div class="col-lg-9">
-                            <p class="form-control-static"><?php echo $_car_additional;?></p>
+
+							<table class="table table-condensed table-striped">
+								<thead>
+									<tr>
+										<th style="width: 15%;" ">Date</th>
+										<th>Campaign</th>
+										<th>Car Number</th>
+										<th>Car Model</th>
+										<th>Activity</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<?php
+									foreach($_history as $row){
+										?>
+										<tr>
+											<td><?php echo date("j M 'y", $row['trn_date']);?><br>
+											<small><?php echo date('h:i:s a', $row['trn_date']);?></small></td>
+											<td><?php echo $row['cmpn_name'];?></td>
+											<td><?php echo $row['car_number'];?></td>
+											<td><?php echo $row['car_model'];?></td>
+											<td><?php echo $row['tran_description']. '<br><small>'.$row['tran_activity'].'</small>';?></td>
+
+										</tr>
+									<?php
+									}
+									?>
+
+								</tbody>
+
+							</table>
+							<hr/>
+							<p class="form-control-static"><?php echo $_car_additional;?></p>
                         </div>
+
                     </div>
                 </div>
             </div>

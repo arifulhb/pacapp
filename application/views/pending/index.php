@@ -22,7 +22,8 @@ if($is_success==true){ ?>
         <thead>
             <tr>
                 <th style="min-width: 67px;"><i class=" fa fa-edit"></i></th>
-                <th style="min-width: 140px;">Date</th>
+				<th>TMP SN</th>
+				<th style="min-width: 140px;">Date</th>
                 <th>Customer Name</th>
                 <th>Type</th>
                 <th>Campaign</th>                                
@@ -40,6 +41,7 @@ if($is_success==true){ ?>
             <?php
             foreach($_list as $row): ?>
             <tr id="row_<?php echo $row['tmp_subs_sn'];?>">
+
                 <td>
 					<div class="btn-group">
                     	<a href="<?php echo base_url().'pending/edit/'.$row['tmp_subs_sn'];?>"
@@ -49,7 +51,10 @@ if($is_success==true){ ?>
 								title="Reject"><i class="fa fa-trash-o "></i>
 						</button>
 					</div>
-                </td>                  
+                </td>
+				<td>
+					<?php echo $row['tmp_subs_sn'];?>
+				</td>
                 <td><a href='<?php echo base_url().'pending/view/'.$row['tmp_subs_sn'];?>'>
                     <?php echo date('d M \'y h:i a',$row['subs_date']);?>
                     </a>

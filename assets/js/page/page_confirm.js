@@ -31,6 +31,7 @@ require(['order!jquery','order!apppath','order!moment','order!json2','order!inpu
 
         //console.log('cmpn sn: '+_cmpn_sn);
 
+
         var _action=$('#_action').val();
 
         if(_cmpn_sn!=''){
@@ -105,16 +106,16 @@ require(['order!jquery','order!apppath','order!moment','order!json2','order!inpu
                 url: apppath+'/customer/getCampaignByCustomerAjax',
                 data: '_cmpn_sn='+_cmpn_sn+'&_cust_sn='+_cust_sn,          
                 success: function(_data) {
-                    
-                    ///console.log(_data);  
+
+
                     var returnedData = JSON.parse(_data);                    
                     var _size=Number($(returnedData).size());
                      //console.log('size: '+_size);
                      if(_size>0){
-                        console.log('show');
+
                         $(returnedData).each(function(i,val){
                                                
-                            console.log('val: '+val);
+
                             $('#campaign_duration_type').text(val.cmpn_duration_type+'s');                        
                             $('#inputNumberOfMonths').val(val.cmpn_expire_duration);
 
@@ -122,13 +123,16 @@ require(['order!jquery','order!apppath','order!moment','order!json2','order!inpu
 
                             //add start date
                             $('#new_start_date_text').text(moment().format('DD MMMM, YYYY'));
-                            $('#new_start_date').val(moment().format('YYYY-MM-DD'));
+                            //$('#new_start_date').val(moment().format('YYYY-MM-DD') );
+                            $('#new_start_date').val(moment().format('DD MMMM, YYYY') );
+
 
                             //add new expire date
                             var _expire_date='';
                             if(val.cmpn_duration_type==='day'){
                                 _expire_date=moment().add('days',val.cmpn_expire_duration).format('DD MMMM, YYYY');
                                 $('#new_expire_date').val(moment().add('days',val.cmpn_expire_duration).format('YYYY-MM-DD'));
+
                             }else if(val.cmpn_duration_type==='month'){
                                 _expire_date=moment().add('months',val.cmpn_expire_duration).format('DD MMMM, YYYY');
                                 $('#new_expire_date').val(moment().add('months',val.cmpn_expire_duration).format('YYYY-MM-DD'));

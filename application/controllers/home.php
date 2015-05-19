@@ -170,12 +170,15 @@ class Home extends CI_Controller {
 
     public function addCustomer(){
         
-        if($this->session->userdata('is_front_logged_in')==TRUE){            
+        if($this->session->userdata('is_front_logged_in')==TRUE){
+
+
             $data=  site_data();
             $data['_page_title']='Add Customer';
             $data['_action']='add';
             $data['_country']=  getCountry();
-            $this->template->front_add_customer($data);                        
+            $this->template->front_add_customer($data);
+
         }else{
             //user not logged in
             //FRONT END LOGIN

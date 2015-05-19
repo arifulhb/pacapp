@@ -67,7 +67,7 @@
                 echo '<div style="padding:10px 20px;">';
             }
             ?>    
-                    <h4 class="list-group-item-heading"><?php echo $row['cmpn_name'];?></h4>
+                    <h4 class="list-group-item-heading"><?php echo $row['cmpn_name'];?> <small><?php echo $row['subs_type'];?></small></h4>
                     <p class="list-group-item-text"><?php echo $_type;?></p>
                     <p class="list-group-item-text">Expire Date: <?php echo date('d M, Y',$row['expire_date']);?></p>
                 

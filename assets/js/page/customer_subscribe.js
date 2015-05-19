@@ -42,5 +42,30 @@ require(['order!jquery','order!moment','order!apppath','order!jquery-ui'], funct
        }
        
    });//end function
+
+    $('.btn-reopen').click(function(){
+
+        var tmp_subs_sn = $(this).val();
+
+        $.ajax({
+            type: "POST",
+            url: apppath+'/subscription/reopen',
+            data: 'tmp_subs_sn='+tmp_subs_sn,
+            success: function(response, textStatus, jqXHR) {
+
+                if(textStatus=='success'){
+
+                    $("#tmp_"+tmp_subs_sn).find('.status label').removeClass('label-warning');
+                    $("#tmp_"+tmp_subs_sn).find('.status label').addClass('label-info');
+                    $("#tmp_"+tmp_subs_sn).find('.status label').html('Pending');
+                }
+
+            },
+            error:function(error){
+                console.log('ERROR: '+error);
+            }
+        });
+
+    });
     
 });

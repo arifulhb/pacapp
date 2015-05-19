@@ -149,8 +149,29 @@ class Customer_model extends CI_Model
         return $res->result_array();
         
     }//end function
-    
-        public function getListFilter($per_page,$offset,$filter){
+
+
+	/**
+	 *
+	 * Issue: http://pm.appiolab.com/issues/54
+	 *
+	 * @param $cust_sn
+	 */
+	public function getHistory($cust_sn){
+
+		$this->db->select('unix_timestamp(t.trn_date) AS trn_date, c.cmpn_name, s.car_number, s.car_model, t.tran_activity, t.tran_description');
+		$this->db->from('avcd_transection as t');
+		$this->db->join('avcd_subscription as s', 's.subs_sn = t.subs_sn', 'LEFT OUTER');
+		$this->db->join('avcd_campaign as c', 'c.cmpn_sn = s.cmpn_sn', 'LEFT OUTER');
+		$this->db->where('s.cust_sn', $cust_sn);
+		$this->db->order_by('t.trn_sn', 'DESC');
+		$res = $this->db->get();
+
+		return $res->result_array();
+
+	}//endf function
+
+    public function getListFilter($per_page,$offset,$filter){
             
         if($offset==''){
             $offset=0;
@@ -385,6 +406,9 @@ class Customer_model extends CI_Model
         return $res->result_array();
     }//end function
 
+
+
+
     /**
      *
      * Table `avcd_customer_id` is used to keep record of previous card_id if a new card_id is added
@@ -403,7 +427,12 @@ class Customer_model extends CI_Model
 		 * 2015-04-27: Issue: 1 : Subquery for cust_balance added
 		 */
 
-        $this->db->select('subs_sn, c.cust_first_name,c.cust_sn,
+       /*
+       Issue 52
+       http://pm.appiolab.com/issues/52
+
+
+       $this->db->select('subs_sn, c.cust_first_name,c.cust_sn,
 			(SELECT IFNULL(SUM(cust_balance),0) as cbl
 				FROM avcd_subscription as sub
 				LEFT outer join avcd_campaign as cmpn on cmpn.cmpn_sn = sub.cmpn_sn
@@ -423,8 +452,28 @@ class Customer_model extends CI_Model
         $this->db->or_where('i.cust_card_id',$card_id);      //cust_card_id ID from history
 //        $this->db->group_by('c.cust_card_id');          //ADDED ON FEB 17, 2015 ON REQUEST OF Nehru at Whatsapp, Removed in issue 1
 		$this->db->order_by('s.subs_sn', 'desc');
-		$this->db->limit(1);
-        $res=$this->db->get();
+		$this->db->limit(1);*/
+
+		/**
+		 * THIS NEW CODE IS ADDED AS PER    http://pm.appiolab.com/issues/52
+		 */
+		$this->db->select('s.subs_sn, s.cust_sn, s.subs_date, s.cmpn_sn, UNIX_TIMESTAMP(s.expire_date) as expire_date, s.cust_balance, s.cmpn_sn,
+							c.cust_first_name, c.cust_card_id, c.cust_car_no,s.subs_type,
+							cm.cmpn_name, cm.cmpn_type, cm.cmpn_visit_active_button');
+		$this->db->from('avcd_subscription as s');
+		$this->db->join('avcd_customer as c','c.cust_sn = s.cust_sn','LEFT OUTER');
+		$this->db->join('avcd_campaign AS cm','s.cmpn_sn = cm.cmpn_sn','LEFT OUTER');
+		$this->db->join('avcd_customer_id AS i','i.cust_sn=c.cust_sn','LEFT OUTER');
+		$this->db->where('c.cust_card_id', $card_id);    	//CARD ID NUMBER
+		$this->db->or_where('c.cust_id',$card_id);      	//ID NUMBER
+		$this->db->or_where('i.cust_card_id',$card_id);  	//cust_card_id ID from history
+        $this->db->group_by('s.subs_sn');
+
+
+		$res=$this->db->get();
+
+		/*echo $this->db->last_query();
+		exit();*/
 
         return $res->result_array();
 
@@ -495,10 +544,19 @@ class Customer_model extends CI_Model
     }//end function
     
     public function getCardListByCustomer($cust_sn){
-        
-        $this->db->select('cust_card_id');
+
+		/**
+		 * ISSUE: http://pm.appiolab.com/issues/56
+		 */
+        /*$this->db->select('cust_card_id');
         $this->db->from('avcd_customer_id');
-        $this->db->where('cust_sn',$cust_sn);
+        $this->db->where('cust_sn',$cust_sn);*/
+		$this->db->select('i.*, b.card_id as blocked_card');
+		$this->db->from('avcd_customer_id as i');
+		$this->db->join('avcd_card_block as b', 'b.card_id = i.cust_card_id', 'LEFT');
+		$this->db->where('i.cust_sn', $cust_sn);
+
+
         $res=$this->db->get();
         
         return $res->result_array();

@@ -96,7 +96,7 @@ require(['order!jquery','order!apppath','order!moment','order!json2'], function(
                 url: apppath+'/pending/approve',
                 data: _post_data,                
                 success: function(_data) {     
-                    console.log(_data);
+                    //console.log(_data);
                     if(_data==true){
                         alert('Approved Successfully');
                         $('#row_'+tmpsn).remove();

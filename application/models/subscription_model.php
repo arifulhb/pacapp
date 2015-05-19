@@ -124,6 +124,7 @@ class Subscription_model extends CI_Model
         
         $this->db->where('s.subs_sn',$subs_sn);
         */
+
          $sql='SELECT 	s.`tmp_subs_sn` AS subs_sn, s.`subs_type`, s.`subs_date`, s.`expire_date`, s.`cust_balance`, s.`update_date` AS req_date, s.`car_number`, ';
          $sql.='s.car_model, s.car_color, s.subs_bill_no, s.subs_bill_amount,s.tran_value, s.redemption, s.remark, ';
          $sql.='s.old_balance, c.cust_id, c.cust_sn, c.cust_first_name, c.cust_phone,  ';
@@ -548,5 +549,35 @@ class Subscription_model extends CI_Model
         return $newid;
         
     }//end function
+
+
+	public function getSubscriptionTrashHistory($cust_sn){
+
+		$this->db->select('s.subs_sn, c.cmpn_name, c.cmpn_type, t.*');
+		$this->db->from('avcd_subscription_tmp as t');
+		$this->db->join('avcd_campaign as c', 'c.cmpn_sn = t.cmpn_sn', 'LEFT');
+		$this->db->join('avcd_subscription as s', 's.ref_no = t.tmp_subs_sn', 'LEFT');
+		$this->db->where('t.cust_sn', $cust_sn);
+
+		$res = $this->db->get();
+
+		/*echo $this->db->last_query();
+		var_dump($res->result_array());
+		exit();*/
+
+		return $res->result_array();
+
+	}//end function
+
+
+	public function reopen($tmp_subs_sn){
+
+
+		$this->db->where('tmp_subs_sn', $tmp_subs_sn);
+		$res = $this->db->update('avcd_subscription_tmp', array('status'=>0));
+		return $res;
+
+
+	}//end function
     
 }//end class

@@ -108,10 +108,20 @@
                                 <?php echo $subs_type=='Renewal'?'selected':'';?>>Renewal</option>
                         <option value="Change New Card"
                                 <?php echo $subs_type=='Change New Card'?'selected':'';?>>Change New Card</option>
-                        <option value="Change Car"
-                                <?php echo $subs_type=='Change Car'?'selected':'';?>>Change Car</option>
-                        <option value="Lost Card"
-                                <?php echo $subs_type=='Lost Card'?'selected':'';?>>Lost Card</option>                        
+
+						<?php
+
+							/**
+							 *
+
+							Issue: http://pm.appiolab.com/issues/53
+							<option value="Change Car"
+									<?php echo $subs_type=='Change Car'?'selected':'';?>>Change Car</option>
+							<option value="Lost Card"
+									<?php echo $subs_type=='Lost Card'?'selected':'';?>>Lost Card</option>
+
+						*/
+						?>
                     </select>
                 </div>
             </div>

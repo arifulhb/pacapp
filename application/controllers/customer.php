@@ -174,7 +174,10 @@ class Customer extends CI_Controller {
             $data['_visit_subs']=$this->subscription_model->getCustomerSubscriptions($data['_sn'],'visit');
             $data['_session_subs']=$this->subscription_model->getCustomerSubscriptions($data['_sn'],'session');
             $data['_gift_subs']=$this->subscription_model->getCustomerSubscriptions($data['_sn'],'giftcard');
-//
+
+
+			$data['_tmp_history']	= $this->subscription_model->getSubscriptionTrashHistory($data['_sn']);
+
 //            $data['_country']=  getCountry();
 
 
@@ -224,6 +227,7 @@ class Customer extends CI_Controller {
         
     }//end function
 
+
     public function details(){
         
         if($this->session->userdata('is_logged_in')==TRUE){
@@ -237,7 +241,19 @@ class Customer extends CI_Controller {
             $data['_record']=$this->customer_model->getRecord($data['_sn']);
             $data['_card_ids']=$this->customer_model->getCardListByCustomer($data['_sn']);
 
-            $this->load->model('subscription_model');            
+			/**
+			 * Issue: http://pm.appiolab.com/issues/54
+			 */
+			$data['_history'] = $this->customer_model->getHistory($data['_sn']);
+
+
+			/**
+			 * Issue: http://pm.appiolab.com/issues/56
+			 */
+			$data['_card_ids']=$this->customer_model->getCardListByCustomer($data['_sn']);
+
+
+			$this->load->model('subscription_model');
             $data['_visit_subs']=$this->subscription_model->getCustomerSubscriptions($data['_sn'],'visit');
             $data['_session_subs']=$this->subscription_model->getCustomerSubscriptions($data['_sn'],'session');
             $data['_gift_subs']=$this->subscription_model->getCustomerSubscriptions($data['_sn'],'giftcard');
@@ -884,7 +900,7 @@ class Customer extends CI_Controller {
             $data['inputType']              = $this->input->post('inputType');
             $data['new_expire_date']        = $this->input->post('new_expire_date');
                         
-            $data['inputDuration']        = $this->input->post('inputDuration');
+            $data['inputDuration']        	= $this->input->post('inputDuration');
             
             $data['inputNumberOfSessions']  = $this->input->post('inputNumberOfSessions');
             $data['inputNewBalance']        = $this->input->post('inputNewBalance');        

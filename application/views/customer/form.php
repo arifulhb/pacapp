@@ -1,4 +1,14 @@
 <li><a href="<?php echo base_url() . 'customer'; ?>">Customer</a></li>
+<!--<li><a href="--><?php //echo base_url() . 'customer'; ?><!--">Customer</a></li>-->
+<?php
+	if(isset($_record[0]['cust_sn'])){
+		 ?>
+		<li><a href="<?php echo base_url() . 'customer/details/'.$_record[0]['cust_sn']; ?>"><?php echo $_record[0]['cust_first_name'];?></a></li>
+
+			<?php
+
+	}
+?>
 <li class="active"><?php echo $_action == 'add' ? 'Add New' : 'Update'; ?> Customer</li>
 </ul>
 
@@ -120,58 +130,204 @@ if($_action=='update'){
                 <?php
             endif;
             ?>
-            <div class="form-group">
-                <label for="inputCardID" class="col-md-2 control-label">Card ID *</label>
-                <div class="col-md-5">
-                    <?php
-                    if($_action=='add'){
-                    ?>
-                    <input type="text" class="form-control" id="inputCardID" value="<?php echo $_card_id;?>"
-                           name="inputCardID" placeholder="Card ID" required="">
-                    <?php }
-                    else{ ?>
-                    <p class="form-control-static"><strong>
-                            <span id="active_card_id"><?php echo $_card_id;?></span></strong>
-                        <button class="btn btn-xs btn-default pull-right" type="button" 
-                                id="change_card" title="Change Card ID"><i class="fa fa-pencil"></i></button>
-                    </p>
-                        <?php
-                                                    
-                            echo '<ul class="card_id_list">';
-                            foreach($_card_ids as $id): ?>
-                                <li style="height: 22px;border-bottom: #eee dotted 1px;"
-                                    id="card_<?php echo $id['cust_card_id'];?>"><?php echo $id['cust_card_id'];?>&nbsp;
-                                    <button class="btn btn-xs btn-link btn-card-remove" 
-                                            type="button" value="<?php echo $id['cust_card_id'];?>"
-                                    title="Remove ID"><i class="fa fa-trash-o"></i></button>
-                                </li>
-                                <?php
-                            endforeach;                        
-                            echo '</ul>';                        
-                    }?>
-                </div>
-            </div>
+
+			<div class="row">
+				<div class="col-lg-6 col-md-12 col-sm-12">
+
+					<div class="form-group">
+						<label for="inputCardID" class="col-md-3 control-label">Card ID *</label>
+						<div class="col-md-9">
+							<?php
+								if($_action=='add'){
+									?>
+									<input type="text" class="form-control" id="inputCardID" value="<?php echo $_card_id;?>"
+										   name="inputCardID" placeholder="Card ID" required="">
+								<?php }
+								else{ ?>
+									<p class="form-control-static"><strong>
+											<span id="active_card_id"><?php echo $_card_id;?></span></strong>
+										<button class="btn btn-xs btn-default pull-right" type="button"
+												id="change_card" title="Change Card ID"><i class="fa fa-pencil"></i></button>
+									</p>
+									<?php
+
+									echo '<ul class="card_id_list">';
+									foreach($_card_ids as $id): ?>
+										<li style="height: 22px;border-bottom: #eee dotted 1px;"
+											id="card_<?php echo $id['cust_card_id'];?>"><?php echo $id['cust_card_id'];?>&nbsp;
+											<button class="btn btn-xs btn-link btn-card-remove"
+													type="button" value="<?php echo $id['cust_card_id'];?>"
+													title="Remove ID"><i class="fa fa-trash-o"></i></button>
+										</li>
+									<?php
+									endforeach;
+									echo '</ul>';
+								}?>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="inputIDNumber" class="col-md-3 control-label">ID Number</label>
+						<div class="col-md-9">
+							<?php
+								//$_cust_id='';
+								if($_cust_id==''){
+									?>
+									<input type="text" class="form-control" id="inputIDNumber" value="<?php echo $_cust_id;?>"
+										   name="inputIDNumber" placeholder="ID Number">
+								<?php }
+								else{ ?>
+									<p class="form-control-static"><span id='cust_id_number'><?php echo $_cust_id;?></span>
+										<button class="btn btn-xs btn-default pull-right" type="button"
+												value="<?php echo $_cust_id;?>"
+												id="change_id" title="Change ID Number"><i class="fa fa-pencil"></i></button>
+									</p>
+								<?php
+								}?>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="inputFirstName" class="col-md-3 control-label">Name *</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="inputFirstName"  value="<?php echo trim($_first_name);?>"
+								   name="inputFirstName" placeholder="First Name" required="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputMobileNo" class="col-md-3 control-label">Mobile Number</label>
+						<div class="col-md-9">
+							<input type="tel" class="form-control" id="inputMobileNo"  value="<?php echo $_mobile;?>"
+								   name="inputMobileNo" placeholder="Mobile Number">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPhoneNumber" class="col-md-3 control-label">Phone Number</label>
+						<div class="col-md-9">
+							<input type="tel" class="form-control" id="inputPhoneNumber"  value="<?php echo $_phone;?>"
+								   name="inputPhoneNumber" placeholder="Phone Number">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="inputEmail" class="col-md-3 control-label">Email Address</label>
+						<div class="col-md-9">
+							<input type="email" class="form-control" id="inputEmail"  value="<?php echo $_email;?>"
+								   name="inputEmail" placeholder="Email Address">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputBirthday" class="col-md-3 control-label">Birthday</label>
+						<div class="col-md-9">
+							<input class="form-control" id="inputBirthday" name="inputBirthday"
+								   type="text" value="<?php echo $_dob;?>">
+						</div>
+					</div>
+
+
+				</div><!--end left-->
+
+
+				<div class="col-lg-6 col-md-12 col-sm-12">
+
+
+					<div class="form-group">
+						<label for="inputAddress" class="col-md-3 control-label">Address</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="inputAddress"  value="<?php echo $_address;?>"
+								   name="inputAddress" placeholder="Address">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-9 col-md-offset-3">
+							<input type="text" class="form-control" id="inputAddress2"  value="<?php echo $_address2;?>"
+								   name="inputAddress2" placeholder="Address Line 2">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputCity" class="col-md-3 control-label">City</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="inputCity"  value="<?php echo $_city;?>"
+								   name="inputCity" placeholder="City">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputZipcode" class="col-md-3 control-label">ZipCode</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="inputZipcode"  value="<?php echo $_zip;?>"
+								   name="inputZipcode" placeholder="Zipcode">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputCountry" class="col-md-3 control-label">Country</label>
+						<div class="col-md-9">
+							<select class="form-control" id="inputCountry" name="inputCountry">
+								<?php
+									foreach($_country as $key => $value): ?>
+										<option <?php echo $_country_key==$key?'SELECTED':'';?> value="<?php echo $key?>"><?php echo $value;?></option>
+									<?php
+									endforeach;?>
+							</select>
+						</div>
+					</div>
+
+					<hr/>
+
+					<div class="form-group">
+						<label for="inputCarNumber" class="col-md-3 control-label">Car Number</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="inputCarNumber"  value="<?php echo $_car_no;?>"
+								   name="inputCarNumber" placeholder="Car Number">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputCarModel" class="col-md-3 control-label">Model</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="inputCarModel" value="<?php echo $_car_model;?>"
+								   name="inputCarModel" placeholder="Model">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputCarColor" class="col-md-3 control-label">Color</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="inputCarColor"  value="<?php echo $_car_color;?>"
+								   name="inputCarColor" placeholder="Color">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputCarColor" class="col-lg-3 col-md-3 control-label">Additional Information</label>
+						<div class="col-md-9 col-lg-9">
+							<div class="form-control" contenteditable="true" id="inputAdditionalInfo"
+								 style=" margin-bottom: 10px; padding: 10px; border: 1px solid #e2e2e4; min-height: 150px;
+                         overflow: scroll;">
+								<?php echo trim($_additional);?>
+							</div>
+							<input type="hidden" name="inputAdditionalInfo" id="inputAdditionalInfo_hide"
+								   value="<?php echo trim($_additional);?>">
+							<?php /*
+                    <textarea class="form-control" id="inputAdditionalInfo"
+                              name="inputAdditionalInfo" rows="5"><?php echo $_additional;?></textarea>*/?>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-lg-12">
+					<div class="form-group">
+						<div class="col-lg-6 col-lg-offset-3">
+
+							<button type="submit" class="btn btn-primary btn-block"><?php echo ucfirst($_action);?> Customer</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
             
-            <div class="form-group">
-                <label for="inputIDNumber" class="col-md-2 control-label">ID Number</label>
-                <div class="col-md-5">
-                    <?php                    
-                    //$_cust_id='';
-                    if($_cust_id==''){
-                    ?>
-                    <input type="text" class="form-control" id="inputIDNumber" value="<?php echo $_cust_id;?>"
-                           name="inputIDNumber" placeholder="ID Number">
-                    <?php }
-                    else{ ?>
-                    <p class="form-control-static"><span id='cust_id_number'><?php echo $_cust_id;?></span>
-                    <button class="btn btn-xs btn-default pull-right" type="button" 
-                            value="<?php echo $_cust_id;?>"
-                                id="change_id" title="Change ID Number"><i class="fa fa-pencil"></i></button>
-                    </p>
-                        <?php
-                    }?>
-                </div>
-            </div>
+
             <?php 
             /*
             if($_action=='add'){ ?>
@@ -193,13 +349,7 @@ if($_action=='update'){
             }//end if    */          
             ?>
             
-            <div class="form-group">
-                <label for="inputFirstName" class="col-md-2 control-label">Name *</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputFirstName"  value="<?php echo trim($_first_name);?>"
-                           name="inputFirstName" placeholder="First Name" required="">
-                </div>
-            </div>
+
             <?php /*
             <div class="form-group">
                 <label for="inputLastName" class="col-md-2 control-label">Last Name *</label>
@@ -208,114 +358,9 @@ if($_action=='update'){
                            name="inputLastName" placeholder="Last Name" required="">
                 </div>
             </div> */?>
-            <div class="form-group">
-                <label for="inputMobileNo" class="col-md-2 control-label">Mobile Number</label>
-                <div class="col-md-5">
-                    <input type="tel" class="form-control" id="inputMobileNo"  value="<?php echo $_mobile;?>"
-                           name="inputMobileNo" placeholder="Mobile Number">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputPhoneNumber" class="col-md-2 control-label">Phone Number</label>
-                <div class="col-md-5">
-                    <input type="tel" class="form-control" id="inputPhoneNumber"  value="<?php echo $_phone;?>"
-                           name="inputPhoneNumber" placeholder="Phone Number">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputEmail" class="col-md-2 control-label">Email Address</label>
-                <div class="col-md-5">
-                    <input type="email" class="form-control" id="inputEmail"  value="<?php echo $_email;?>"
-                           name="inputEmail" placeholder="Email Address">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputBirthday" class="col-md-2 control-label">Birthday</label>
-                <div class="col-md-5"> 
-                    <input class="form-control" id="inputBirthday" name="inputBirthday" 
-                                   type="text" value="<?php echo $_dob;?>">                 
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputAddress" class="col-md-2 control-label">Address</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputAddress"  value="<?php echo $_address;?>"
-                           name="inputAddress" placeholder="Address">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-5 col-md-offset-2">
-                    <input type="text" class="form-control" id="inputAddress2"  value="<?php echo $_address2;?>"
-                           name="inputAddress2" placeholder="Address Line 2">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputCity" class="col-md-2 control-label">City</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputCity"  value="<?php echo $_city;?>"
-                           name="inputCity" placeholder="City">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputZipcode" class="col-md-2 control-label">ZipCode</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputZipcode"  value="<?php echo $_zip;?>"
-                           name="inputZipcode" placeholder="Zipcode">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputCountry" class="col-md-2 control-label">Country</label>
-                <div class="col-md-5">
-                    <select class="form-control" id="inputCountry" name="inputCountry">
-                          <?php 
-                                foreach($_country as $key => $value): ?>
-                                <option <?php echo $_country_key==$key?'SELECTED':'';?> value="<?php echo $key?>"><?php echo $value;?></option>    
-                                    <?php                                    
-                                endforeach;?>                        
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputCarNumber" class="col-md-2 control-label">Car Number</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputCarNumber"  value="<?php echo $_car_no;?>"
-                           name="inputCarNumber" placeholder="Car Number">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputCarModel" class="col-md-2 control-label">Model</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputCarModel" value="<?php echo $_car_model;?>"
-                           name="inputCarModel" placeholder="Model">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputCarColor" class="col-md-2 control-label">Color</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputCarColor"  value="<?php echo $_car_color;?>"
-                           name="inputCarColor" placeholder="Color">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputCarColor" class="col-md-2 control-label">Additional Information</label>
-                <div class="col-md-5">
-                    <div class="form-control" contenteditable="true" id="inputAdditionalInfo"
-                         style=" margin-bottom: 10px; padding: 10px; border: 1px solid #e2e2e4; min-height: 150px;
-                         overflow: scroll;">                        
-                        <?php echo trim($_additional);?>
-                    </div>
-                    <input type="hidden" name="inputAdditionalInfo" id="inputAdditionalInfo_hide"
-                           value="<?php echo trim($_additional);?>">
-                    <?php /*
-                    <textarea class="form-control" id="inputAdditionalInfo" 
-                              name="inputAdditionalInfo" rows="5"><?php echo $_additional;?></textarea>*/?>
-                </div>
-            </div>            
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-5">
-                    <button type="submit" class="btn btn-primary btn-block"><?php echo ucfirst($_action);?> Customer</button>
-                </div>
-            </div>
+
+
+
         </form>
     </div>
 </section>
@@ -437,6 +482,8 @@ if(count($_cust_campaign)>0){ ?>
             </tbody>
         </table>
     </div>
+
+
                 
 <!--CHANGE CARD ID model-->
 
@@ -514,7 +561,106 @@ if(count($_cust_campaign)>0){ ?>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
-</section >   
+</section >
+
+
+	<section class="panel panel-danger">
+		<header class="panel-heading clearfix"> Subscription History</header>
+		<div class="panel-body">
+			<table class="table table-condensed table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>SN</th>
+						<th>Date</th>
+						<th>Campaign</th>
+						<th>Subs' Type</th>
+						<th>Expire Date</th>
+						<th>Balance</th>
+						<th>Bill No</th>
+						<th>Car No</th>
+						<th>Car Color</th>
+						<th>Rermark </th>
+						<th>Status</th>
+						<th>Update Date</th>
+						<th style="width: 12%">Action</th>
+
+					</tr>
+
+				</thead>
+				<tbody>
+				<?php
+					foreach($_tmp_history as $h){
+
+						$class = $h['subs_sn']!=null?'success':'';
+
+						?>
+						<tr id="tmp_<?php echo $h['tmp_subs_sn'];?>" class="<?php echo $class;?>">
+							<td><?php echo $h['tmp_subs_sn'];?></td>
+							<td><?php echo $h['subs_date'];?></td>
+							<td>
+								<?php echo $h['cmpn_name'];?><br>
+								<small><?php echo $h['cmpn_type'];?></small>
+							</td>
+							<td><?php echo $h['subs_type'];?></td>
+							<td><?php echo $h['expire_date'];?></td>
+							<td><?php echo $h['cust_balance'];?></td>
+							<td><?php echo $h['subs_bill_no'];?></td>
+							<td><?php echo $h['car_number'];?></td>
+							<td><?php echo $h['car_color'];?></td>
+							<td><p class="small"><?php echo $h['remark'];?></p></td>
+							<td class="status"><?php
+
+
+									if($class==''){
+										if($h['status']==0){
+											echo "<label class='label label-info'>Pending</label>";
+										}elseif($h['status']==1){
+											echo "<label class='label label-warning'>Approved</label>";
+
+										}elseif($h['status']==2){
+											echo "<label class='label label-warning'>rejected</label>";
+										}
+									}else{
+										if($h['status']==0){
+											echo "<label class='label label-info'>Pending</label>";
+										}elseif($h['status']==1){
+											echo "<label class='label label-success'>Approved</label>";
+
+										}elseif($h['status']==2){
+											echo "<label class='label label-warning'>rejected</label>";
+										}
+									}
+									 ?></td>
+							<td><?php echo $h['update_date'];?></td>
+							<td>
+								<?php
+								if($class==''){ ?>
+									<div class="btn-group btn-group-xs">
+										<button class="btn btn-warning btn-reopen" value="<?php echo $h['tmp_subs_sn'];?>">
+											<i class="fa fa-thumbs-up"></i> Re Open</button>
+										<!--<button class="btn btn-danger btn-delete" value="<?php /*echo $h['tmp_subs_sn'];*/?>">
+											<i class="fa fa-trash-o"></i> Delete</button>-->
+									</div>
+									<?php
+								}else{?>
+									<a class="btn btn-success btn-sm" href='<?php echo base_url().'subscription/view/'.$h['subs_sn'];?>'
+										title="Goto">
+										<i class="fa fa-link"></i> Ref. Subscription</a>
+								<?php
+								}
+								?>
+
+							</td>
+
+						</tr>
+					<?php
+					}
+				?>
+				</tbody>
+			</table>
+
+		</div>
+	</section>
 </div>    
 <?php 
     
