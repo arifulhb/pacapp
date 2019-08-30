@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = '127.0.0.1';
 $db['default']['username'] = 'root';
-$db['default']['password'] = '';//live/stage-> nano5577
-$db['default']['database'] = 'pac_app';//live -> pac_app || local -> pac_app || stage -> pac_app_stage
+$db['default']['password'] = 'root';
+$db['default']['database'] = 'pacapp_dev';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
