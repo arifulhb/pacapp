@@ -164,7 +164,7 @@
                 <label for="inputCarNumber" class="col-lg-3 col-sm-3 control-label">Car Number</label>
                 <div class="col-lg-9">
                     <input type="text" class="form-control" id="inputCarNumber" 
-                           value="<?php echo $_record[0]['car_number'];?>"  maxlength="20"
+                           value="<?php echo $_record[0]['car_number'];?>"  maxlength="100"
                            name="inputCarNumber" placeholder="" required="">
                     
                 </div>

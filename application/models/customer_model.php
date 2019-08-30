@@ -249,10 +249,14 @@ class Customer_model extends CI_Model
         $sql.='FROM avcd_customer as c ';
         $sql.='LEFT OUTER JOIN avcd_customer_id AS i ON i.cust_sn= c.cust_sn ';
         $sql.='WHERE c.cust_card_id = "'.$_sn.'" OR i.`cust_card_id`="'.$_sn.'" ';
+        //2015-12-11 to avoid multiple records;
+        $sql.='LIMIT 1';
         $res=$this->db->query($sql);
         
         //$sql.=' ';
-        
+
+//        echo $sql;
+//        exit();
         /*
         $this->db->select('cust_sn, cust_card_id, cust_id, CONCAT (cust_first_name,  cust_last_name) AS cust_first_name, cust_mobile, cust_phone, 
             cust_email, cust_dob, cust_address_line1, cust_address_line2, cust_city, cust_zip, cust_country, 

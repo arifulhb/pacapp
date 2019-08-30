@@ -23,14 +23,18 @@
             $_expire=$row['expire_date'];                        
             $sec_diff   =  $_expire-$_today;
             $_diff=  ($sec_diff/3600)/24;
-            
+
+            $balance_on = true;
+
+
             
             
             if($row['cmpn_type']!=''){
                 
             switch ($row['cmpn_type']):
-                case 'visit':
 
+                case 'visit':
+                    $balance_on = true;
 					/**
 //                    $_type='Visits - '.$row['cust_balance'].' left';
 					 * Issue: 1
@@ -40,27 +44,41 @@
 					 * Feature: 2 (http://pm.appiolab.com/issues/2)
 					 * Removed "left" from the visit
 					 */
-					$_s= $row['cust_balance']>1?"s":"";
-                    $_type='Visits - '.$row['cust_balance'].' visit'.$_s.'';
+					$_s         = $row['cust_balance']>1?"s":"";
+                    $_type      = 'Visits: '.$row['cust_balance'].' visit'.$_s.'';
 
                     //$_type='Visits';
-                    $_seturl='customer/campaign_visit_activate';
+                    $_seturl    = 'customer/campaign_visit_activate';
                     break;
+
                 case 'session':
-                    $_type='Sessions - '.$row['cust_balance'].' left';
+                    $session_balance    = $row['cust_balance'];
+                    $_type      = 'Sessions: '.$row['cust_balance'].' left';
                     //$_type='Sessions';
-                    $_seturl='customer/campaign_sessions_redeem';
+
+                    if($session_balance >0){
+                        $_seturl    = 'customer/campaign_sessions_redeem';
+                        $balance_on = true;
+                    }else{
+                        $_seturl    = '#';
+                        $balance_on = false;
+                    }
                     break;
+
                 case 'giftcard':
-                    $_type='Gift Card - Balance $'.number_format($row['cust_balance'],2,'.',',').' left';
+
+                    $balance_on = true;
+                    $_type      = 'Gift Card: Balance $'.number_format($row['cust_balance'],2,'.',',').' left';
                     //$_type='Gift Card';
-                    $_seturl='customer/campaign_giftcard';
+                    $_seturl    = 'customer/campaign_giftcard';
                     break;
+
             endswitch;
             
-            if($_diff>0){            
+            if( ($_diff > 0) && ($balance_on == true) ) {
             ?>
                 <a class="list-group-item cmlist_submit" href="#">
+
                 <?php 
             }//diff control
             else{

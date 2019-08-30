@@ -300,8 +300,10 @@ $this->load->view('customer/customer_subscription_edit');
         <h4 class="modal-title" id="myModalLabel">Unsubscribe Campaign</h4>
       </div>
       <div class="modal-body">
-          Are you sure to unsubscribe <strong><span id="remove_name"></span></strong>?
-          <input type="hidden" value="" id="remove_id">          
+          <p>Are you sure to unsubscribe Campaign<strong><span id="remove_name"></span></strong>?</p>
+          <p>Subscription Sn: <strong id="subscription-sn"></strong></p>
+          <input type="hidden" value="" id="remove_id">
+          <input type="hidden" value="" id="remove_subscription_id">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -21,7 +21,7 @@ if($_action=='update'){
   $_sn        = $_record[0]['cust_sn'];
   
   $_card_id      = $_record[0]['cust_card_id'];
-  $_cust_id      = $_record[0]['cust_id'];  
+  //$_cust_id      = $_record[0]['cust_id'];  
   $_first_name      = $_record[0]['cust_first_name'];
   $_last_name      = $_record[0]['cust_last_name'];
   $_mobile       = $_record[0]['cust_mobile'];

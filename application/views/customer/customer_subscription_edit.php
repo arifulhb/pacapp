@@ -16,18 +16,17 @@ if(count($_visit_subs)>0){  ?>
         <tbody>
             <?php
 
-            foreach($_visit_subs as $row):                 
-
-                ?>
-            <tr id='row_<?php echo $row['cmpn_sn'];?>'>
-                <td class='name'><?php echo $row['cmpn_name'];?></td>
+            foreach($_visit_subs as $row):?>
+            <tr id='row_<?php echo $row['subs_sn'];?>'>
+                <td class='name_<?php echo $row['subs_sn'];?>'><?php echo $row['cmpn_name'];?></td>
                 <td><?php echo $row['cust_balance'];?></td>
                 <td><?php echo date('d M, Y',$row['expire_date']);?></td>
                 <td>
 					<div class="btn-group">
                     <a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>"
 					   class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-                    <button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'>
+                    <button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'
+                            data-subs-sn="<?php echo $row['subs_sn']; ?>">
                         <i class="fa fa-times"></i> Unsub</button>
 					</div>
                 </td>
@@ -57,18 +56,17 @@ if(count($_session_subs)>0){ ?>
             <tbody>
                 <?php
                 
-                foreach($_session_subs as $row):       
-                    
-                    ?>
-                <tr id='row_<?php echo $row['cmpn_sn'];?>'>
-                   <td  class='name'><?php echo $row['cmpn_name'];?></td>
+                foreach($_session_subs as $row): ?>
+                    <tr id='<?php echo $row['subs_sn'];?>'>
+                    <td class='name_<?php echo $row['subs_sn'];?>'><?php echo $row['cmpn_name'];?></td>
                     <td><?php echo number_format($row['cust_balance'],2,'. ',', ');?></td>
                     <td><?php echo date('d M, Y',$row['expire_date']);?></td>
                     <td>
 						<div class="btn-group">
-							<a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>"
+							<a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn']; ?>"
 							   class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-							<button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'>
+							<button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'
+                                    data-subs-sn="<?php echo $row['subs_sn']; ?>">
 							<i class="fa fa-times"></i> Unsub</button>
 						</div>
                     </td>
@@ -91,23 +89,22 @@ if(count($_gift_subs)>0){  ?>
                     <th class="campaignname">Campaign Name</th>
                     <th>Balance</th>
                     <th>Expiry</th>
-                    <th><i class=" fa fa-edit"></i></th>
+                    <th style="width: 30%;"><i class=" fa fa-edit"></i></th>
                 </tr>
             </thead>
             <tbody>
        <?php
-                
-                foreach($_gift_subs as $row):                    
-                    ?>
-                <tr id='row_<?php echo $row['cmpn_sn'];?>'>
-                   <td  class='name'><?php echo $row['cmpn_name'];?></td>
+                foreach($_gift_subs as $row): ?>
+                <tr id='row_<?php echo $row['subs_sn'];?>'>
+                    <td class='name_<?php echo $row['subs_sn'];?>'><?php echo $row['cmpn_name'];?></td>
                     <td>$<?php echo number_format($row['cust_balance'],0,'.',', ');?></td>
                     <td><?php echo date('d M, Y',$row['expire_date']);?></td>
                     <td>
 						<div class="btn-group">
                         <a href="<?php echo base_url().'customer/details_campaign/'.$row['cust_sn'].'/'.$row['subs_sn'];?>"
 						   class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-                        <button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'>
+                        <button class="btn btn-danger unsubs btn-xs" value='<?php echo $row['cmpn_sn'];?>'
+                                data-subs-sn="<?php echo $row['subs_sn']; ?>">
                         <i class="fa fa-times"></i> Unsub</button>
 						</div>
                     </td>

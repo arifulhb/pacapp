@@ -9,13 +9,74 @@ class Subscription_model extends CI_Model
     }//end constract 
     
     public function insert($data){
-        
-        $this->db->set($data);
-        $res=$this->db->insert('avcd_subscription');
-        
-        return $res;
+        /**
+         * add validation
+         */
+
+        $result = $this->subscriptionInsertValidation($data);
+
+        if($result == null){
+            // add new subscription
+            $this->db->set($data);
+            $this->db->insert('avcd_subscription');
+            $newid=$this->db->insert_id();
+
+            return $newid;
+
+        } else {
+            /**
+             * If the data is already exist, update the data based on the tmp_subs_sn
+             */
+            // update
+            $tmpSn = $result[0]['subs_sn'];
+
+            $this->db->where('subs_sn', $tmpSn);
+            $res = $this->db->update('avcd_subscription', $data);
+
+            return $tmpSn;
+
+        }
+
+//        $this->db->set($data);
+//        $res=$this->db->insert('avcd_subscription');
+//
+//        return $res;
         
     }//end function
+
+    /**
+     * Check for duplicate content during add new subscription
+     *
+     * @param $data
+     */
+    private function subscriptionInsertValidation($data)
+    {
+
+        $subscriptionType = $data['subs_type'];
+        $custSn = $data['cust_sn'];
+        $campaignSn = $data['cmpn_sn'];
+        $subsDate = $data['subs_date'];
+        $expireDate = $data['expire_date'];
+        $userSn = $data['user_sn'];
+        $carNo = $data['car_number'];
+        $carModel = $data['car_model'];
+
+        $this->db->select('t.*');
+        $this->db->from('avcd_subscription as t');
+        $this->db->where('t.cust_sn', $custSn );
+        $this->db->where('t.cmpn_sn', $campaignSn );
+        $this->db->where('t.subs_date', $subsDate);
+        $this->db->where('t.subs_type', $subscriptionType );
+        $this->db->where('t.user_sn', $userSn );
+        $this->db->where('t.car_number', $carNo );
+        $this->db->where('t.car_model', $carModel );
+        $this->db->where('t.expire_date', $expireDate );
+
+        $result = $this->db->get();
+
+        return $result->result_array();
+
+    }
 
     public function getViewRecord($subs_sn){
         
@@ -258,7 +319,7 @@ class Subscription_model extends CI_Model
     }//end function
     
 
-    public function getSubscriptionRequestHistory($cust_sn){
+    public function getSubscriptionRequestHistory($cust_sn) {
         
         $sql='(SELECT s.subs_sn,  UNIX_TIMESTAMP(s.subs_date) AS subs_date,  s.subs_type,  s.cust_sn,  c.cust_first_name,  s.subs_type,  s.cmpn_sn,  p.cmpn_name,  t.num_of_months AS cmpn_expire_duration, s.cust_balance,  s.expire_date,  s.subs_bill_amount,"Approved" AS _status, s.user_sn, u.user_name, u.ol_sn, o.ol_name ';
         $sql.='FROM avcd_subscription AS s ';
@@ -284,7 +345,7 @@ class Subscription_model extends CI_Model
         $sql.='LEFT OUTER JOIN avcd_user     u ON u.user_sn=t.user_sn ';
         $sql.='LEFT OUTER JOIN `avcd_outlet` o ON o.ol_sn=u.`ol_sn` ';
         $sql.='WHERE t.status =2 AND t.cust_sn='.$cust_sn.')';
-        
+
         $res = $this->db->query($sql);
         
         //echo $this->db->last_query();
@@ -425,11 +486,11 @@ class Subscription_model extends CI_Model
      * @param type $cmpn_sn
      * @return type
      */
-    public function unsubscribe($cust_sn,$cmpn_sn){
-        //WARNING:  TO UPDATE THIS FUNCTION TO REMOVE WITH subs_sn
-        
-        $this->db->where('cust_sn',$cust_sn);
-        $this->db->where('cmpn_sn',$cmpn_sn);
+    public function unsubscribe($cust_sn,$cmpn_sn, $subscription_sn){
+
+        $this->db->where('cust_sn', $cust_sn);
+        $this->db->where('cmpn_sn', $cmpn_sn);
+        $this->db->where('subs_sn', $subscription_sn);
         $res=$this->db->delete('avcd_subscription');             
         
         return $res;
@@ -498,16 +559,26 @@ class Subscription_model extends CI_Model
     
     public function get_print_receipt($trn_sn){
 
+//		@TODO FIX THIS QUERY AS PER ISSUE #
 //		2015-04-06 ADDED a sub query for cust_balance to get new balance of all subscriptions.
-        $this->db->select('t.trn_sn, UNIX_TIMESTAMP(t.trn_date) as trn_date,t.tran_value, c.cmpn_name, cust.cust_first_name,
+//		2015-07-07 New query is added with 2 extra filed added so that combined value and regular value is separated.
+        /*$this->db->select('t.trn_sn, UNIX_TIMESTAMP(t.trn_date) as trn_date,t.tran_value, c.cmpn_name, cust.cust_first_name,
         cust.cust_last_name, cust.cust_card_id, cust.cust_car_no, t.tran_activity, t.tran_value,
         (SELECT SUM(ss.cust_balance)  FROM avcd_subscription as ss WHERE ss.cust_sn=cust.cust_sn GROUP BY cust_sn) AS cust_balance,
-        UNIX_TIMESTAMP(s.expire_date) as expire_date') ;
+        UNIX_TIMESTAMP(s.expire_date) as expire_date') ;*/
+
+
+//		2016-07-07 separated customer_balance and expire_date from groupBy cust_sn to show balance of each campaign in receipt
+		$this->db->select('t.trn_sn, UNIX_TIMESTAMP(t.trn_date) as trn_date, t.tran_value, c.cmpn_name, cust.cust_first_name,
+		cust.cust_last_name, cust.cust_card_id, cust.cust_car_no, t.tran_activity , s.cust_balance, UNIX_TIMESTAMP(s.expire_date) as expire_date,
+        (SELECT SUM(ss.cust_balance)  FROM avcd_subscription as ss WHERE ss.cust_sn=cust.cust_sn GROUP BY cust_sn) AS cust_balance_combined,
+        UNIX_TIMESTAMP(s.expire_date) as expire_date_combined') ;
+
         $this->db->from('avcd_transection AS t');
-        $this->db->join('avcd_subscription AS s','s.subs_sn=t.subs_sn','LEFT OUTER');
-        $this->db->join('avcd_campaign AS c','c.cmpn_sn=s.cmpn_sn','LEFT OUTER');
-        $this->db->join('avcd_customer AS cust','cust.cust_sn= s.cust_sn','LEFT OUTER');
-        $this->db->where('t.trn_sn',$trn_sn);
+        $this->db->join('avcd_subscription AS s', 's.subs_sn=t.subs_sn', 'LEFT OUTER');
+        $this->db->join('avcd_campaign AS c', 'c.cmpn_sn=s.cmpn_sn', 'LEFT OUTER');
+        $this->db->join('avcd_customer AS cust', 'cust.cust_sn= s.cust_sn', 'LEFT OUTER');
+        $this->db->where('t.trn_sn', $trn_sn);
 
 		/**
 		 * Next where added to avoid free subscription point in calculation
@@ -515,12 +586,12 @@ class Subscription_model extends CI_Model
 		 *
 		 * Date		21st April, 2015
 		 */
-        $this->db->where('c.cmpn_group',1);
+//        $this->db->where('c.cmpn_group',1);
 
-        $res=$this->db->get();
+        $res = $this->db->get();
 
-//		echo $this->db->last_query();
-//		exit();
+		/*echo $this->db->last_query();
+		exit();*/
         
         return $res->result_array();
         
@@ -539,16 +610,77 @@ class Subscription_model extends CI_Model
         }
         
     }//end function
-    
+
+
+    /**
+     * Add subscription data to temporary table
+     *
+     * @param $data
+     * @return mixed
+     */
     public function addTempSubscription($data){
-    
-        $this->db->set($data);
-        $this->db->insert('avcd_subscription_tmp');
-        $newid=$this->db->insert_id();
-        
-        return $newid;
+
+        $result = $this->validateAddTempSubscription($data);
+
+        if($result == null){
+            // add new
+            $this->db->set($data);
+            $this->db->insert('avcd_subscription_tmp');
+            $newid=$this->db->insert_id();
+
+            return $newid;
+
+        } else {
+            /**
+             * If the data is already exist, update the data based on the tmp_subs_sn
+             */
+            // update
+            $tmpSn = $result[0]['tmp_subs_sn'];
+
+            $this->db->where('tmp_subs_sn', $tmpSn);
+            $res = $this->db->update('avcd_subscription_tmp', $data);
+            return $tmpSn;
+
+        }
         
     }//end function
+
+    /**
+     * Check if the subscription is already there.
+     *
+     * If not there, return null
+     * if there, return rows.
+     *
+     * @param $data
+     */
+    private function validateAddTempSubscription($data){
+
+        $subscriptionType = $data['subs_type'];
+        $custSn = $data['cust_sn'];
+        $campaignSn = $data['cmpn_sn'];
+        $subsDate = $data['subs_date'];
+//        $expireDate = $data['expire_date'];
+        $userSn = $data['user_sn'];
+        $carNo = $data['car_number'];
+        $carModel = $data['car_model'];
+
+
+        $this->db->select('t.*');
+        $this->db->from('avcd_subscription_tmp as t');
+        $this->db->where('t.cust_sn', $custSn );
+        $this->db->where('t.cmpn_sn', $campaignSn );
+        $this->db->where('t.subs_date', $subsDate);
+        $this->db->where('t.subs_type', $subscriptionType );
+        $this->db->where('t.user_sn', $userSn );
+        $this->db->where('t.car_number', $carNo );
+        $this->db->where('t.car_model', $carModel );
+//        $this->db->where('t.expire_date', $expireDate );
+
+        $result = $this->db->get();
+
+        return $result->result_array();
+
+    }
 
 
 	public function getSubscriptionTrashHistory($cust_sn){

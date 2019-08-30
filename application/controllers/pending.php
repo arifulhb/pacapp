@@ -99,11 +99,8 @@ class Pending extends CI_Controller {
             $data['cust_balance']       = $this->input->post('_cust_balance');
             $data['subs_bill_no']       = $this->input->post('_bill_no');
             $data['subs_bill_amount']   = $this->input->post('_bill_amount');
-            
             $data['user_sn']            = $this->input->post('_user_sn');
-            
             $data['remark']             = $this->input->post('_remark');
-            
             $data['car_number']         = $this->input->post('_car_number');
             $data['car_color']          = $this->input->post('_car_color');
             $data['car_model']          = $this->input->post('_car_model');
@@ -111,10 +108,13 @@ class Pending extends CI_Controller {
             $data['ref_no']             = $tempsn;
             
             $this->load->model('subscription_model');
+
             $res = $this->subscription_model->insert($data);
 
             if ($res == true) {
-                $tran['subs_sn'] = $this->db->insert_id(); //get new subscription id
+//                $tran['subs_sn'] = $this->db->insert_id(); //get new subscription id
+                $tran['subs_sn'] = $res;
+
                 $date = new DateTime();
                 $tran['trn_date'] = $date->format("Y-m-d H:i:s");
                 

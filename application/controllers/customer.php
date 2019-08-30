@@ -259,6 +259,10 @@ class Customer extends CI_Controller {
             $data['_gift_subs']=$this->subscription_model->getCustomerSubscriptions($data['_sn'],'giftcard');
 
             $data['_request_history']=$this->subscription_model->getSubscriptionRequestHistory($data['_sn']);
+
+//            echo  '<pre>';
+//            var_dump($data['_request_history']);
+//            exit();
             
             $data['_country']=  getCountry();
 
@@ -500,11 +504,12 @@ class Customer extends CI_Controller {
     
     public function unsubscribe(){
         
-        $_cmpn_sn   =$this->input->post('_cmpn_sn');
-        $_cust_sn   =$this->input->post('_cust_sn');
+        $_cmpn_sn   = $this->input->post('_cmpn_sn');
+        $_cust_sn   = $this->input->post('_cust_sn');
+        $subs_sn    = $this->input->post('subscription_sn');
         
         $this->load->model('subscription_model');        
-        $res=$this->subscription_model->unsubscribe($_cust_sn,$_cmpn_sn);        
+        $res=$this->subscription_model->unsubscribe($_cust_sn, $_cmpn_sn, $subs_sn);
         
         echo $res;
         
@@ -700,7 +705,7 @@ class Customer extends CI_Controller {
             }
 
             
-        }else{
+        } else{
              redirect('login');
             
         }
@@ -1117,10 +1122,13 @@ class Customer extends CI_Controller {
         
        // $_engine= $mypost['_engine'];//$this->input->post('_engine');
                             
-        $res=false;
+        $res = false;
         $this->load->model('customer_model');
+
         if($_action=='add'){
-            $res= $this->customer_model->insert($data);    
+
+            $res = $this->customer_model->insert($data);
+
             if($res['status']==TRUE){
                 //customer added successuflly    
 
@@ -1228,7 +1236,7 @@ class Customer extends CI_Controller {
         $subs_receipt['redemption'] = $mypost['inputNumberOfRedemption'];//$this->input->post('inputNumberOfRedemption');
         $subs_receipt['old_balance']= $mypost['inputOldCardBalance'];//$this->input->post('inputOldCardBalance');
 
-        
+
         //Add Temp value which will wait for Approval
         $this->load->model('subscription_model');
         

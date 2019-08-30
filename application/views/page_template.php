@@ -28,8 +28,8 @@
         echo meta($meta);
 
       //Bootstrap
-        echo link_tag('assets/plugins/bootstrap/css/bootstrap.css');
         echo link_tag('assets/plugins/bootstrap/css/bootstrap-reset.css');
+        echo link_tag('assets/plugins/bootstrap/css/bootstrap.css');
                         
         //Loading Font-Awesome
         echo link_tag('assets/plugins/font-awesome/css/font-awesome.css');

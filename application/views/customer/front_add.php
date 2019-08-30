@@ -189,7 +189,7 @@ else{
             <div class="form-group">
                 <label for="inputCarNumber" class="col-md-2 control-label">Car Number *</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" id="inputCarNumber" required 
+                    <input type="text" class="form-control" id="inputCarNumber" required  maxlength="100"
                            value="<?php echo $_record['cust_car_no'];?>" name="inputCarNumber" placeholder="Car Number">
                 </div>
             </div>

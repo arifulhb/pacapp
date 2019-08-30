@@ -52,19 +52,54 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-sm-3 control-label">Expiry Date</label>
-                        <div class="col-lg-9">
+                        <label class="col-lg-3 col-sm-3 col-md-3 control-label">Expiry Date</label>
+                        <div class="col-lg-5 col-sm-9 col-md-5">
                             <p class="form-control-static">
                                 <span id="expire_date"><?php echo date('d M, Y',$_record[0]['expire_date']);?> </span>
-                                <button type="button" class="btn btn-danger change_expire_date btn-xs" 
-                                        data-date-format="yyyy-mm-dd" data-date="<?php echo date('Y-m-d',$_record[0]['expire_date']);?>"
-                                        ><i class="fa fa-edit"></i></a></button>
-                                <input type="hidden" id="newExpireDate" value="">    
+
+                                <button type="button" class="btn btn-danger change_expire_date btn-xs"
+                                        data-date-format="yyyy-mm-dd"
+                                        data-date="<?php echo date('Y-m-d',$_record[0]['expire_date']);?>">
+                                        <i class="fa fa-edit"></i>
+                                </button>
+                                <br>
+                                <div class="form-group">
+
+                                    <div id="changeDateWell" class="well well-sm" style="display: none;">
+                                        <div class="input-group">
+                                            <input  type="text" id="newExpireDate" style="display: none;"
+                                                    data-inputmask="'alias': 'date'"    class="form-control" maxlength="12"
+                                                    value="<?php echo date('Y-m-d',$_record[0]['expire_date']);?>">
+
+                                             <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info"
+                                                    id="update_expire_date" style="display: none;"
+                                                    value="<?php echo $_record[0]['subs_sn'];?>">
+                                                    <i class="fa fa-upload"></i> Update</button>
+                                                 <button class="btn btn-default" type="button"
+                                                     id="btnCloseExpireDateUpdate">Cancel</button>
+                                             </span>
+                                        </div>
+                                        <p class="text-center"><br>
+                                            <label  style="font-size: 2em;"
+                                                    class="text-info txt-date"></label>
+                                        </p>
+
+                                    </div>
+                                    <p>
+                                        <label id="updateSuccess" class="label label-success" style="display: none;"
+                                            >Expire Date updated successfully!</label>
+                                    </p>
+
+
+                                </div>
+                                <!--<input type="hidden" id="newExpireDate" value="">
                                 <button type="button" class="btn btn-info btn-xs" id="update_expire_date" style="display: none;"
-                                        value="<?php echo $_record[0]['subs_sn'];?>"><i class="fa fa-upload"></i> Update</button>
+                                        value="<?php /*echo $_record[0]['subs_sn'];*/?>"><i class="fa fa-upload"></i> Update</button>
                                 <br>   <br>   
                                 <label id="updateSuccess" class="label label-success" style="display: none;"
-                                       >Expire Date updated successfully!</label>
+                                       >Expire Date updated successfully!</label>-->
+                            </p>
                         </div>
                     </div>                   
                 </form>
@@ -204,4 +239,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
 <script> require(['page/transection']); </script> 
