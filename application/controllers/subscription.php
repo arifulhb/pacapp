@@ -104,6 +104,8 @@ class Subscription extends CI_Controller {
         $this->load->model('subscription_model');
         $data['_record'] = $this->subscription_model->getViewRecord($tmp_sn);
         
+        // var_dump($data);
+        // die();
         $this->template->subscription_view($data);
     } //end function view
     

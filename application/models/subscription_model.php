@@ -80,7 +80,7 @@ class Subscription_model extends CI_Model
 
     public function getViewRecord($subs_sn){
         
-        $this->db->select('UNIX_TIMESTAMP(tmp.`update_date`) AS update_date, t.subs_sn,t.cust_sn, c.cust_first_name,c.cust_id, c.cust_card_id,c.cust_mobile,
+        $this->db->select('UNIX_TIMESTAMP(tmp.`update_date`) AS update_date, t.subs_sn,t.cust_sn, c.cust_first_name, tmp.tmp_subs_sn, c.cust_card_id,c.cust_mobile,
         t.cmpn_sn,p.cmpn_name,t.subs_type, tmp.num_of_months AS cmpn_expire_duration, 
         UNIX_TIMESTAMP(t.subs_date) AS subs_date,  UNIX_TIMESTAMP(t.expire_date) AS expire_date,
         t.cust_balance, t.subs_bill_no,  t.subs_bill_amount,t.car_number, 

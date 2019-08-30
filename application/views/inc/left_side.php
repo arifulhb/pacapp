@@ -1,6 +1,6 @@
         <!--sidebar start-->
         <?php
-        //$thisPage='homePage';
+        $thisPage='homePage';
         ?>
         <aside>
             <div id="sidebar"  class="nav-collapse ">
